@@ -102,13 +102,13 @@ class PhotoViewCoreState extends State<PhotoViewCore>
   double? _scaleBefore;
   double? _rotationBefore;
 
-  AnimationController? _scaleAnimationController;
+  late AnimationController _scaleAnimationController;
   late Animation<double> _scaleAnimation;
 
-  AnimationController? _positionAnimationController;
+  late AnimationController _positionAnimationController;
   late Animation<Offset> _positionAnimation;
 
-  AnimationController? _rotationAnimationController;
+  late AnimationController _rotationAnimationController;
   late Animation<double> _rotationAnimation;
 
   PhotoViewHeroAttributes? get heroAttributes => widget.heroAttributes;
@@ -131,9 +131,9 @@ class PhotoViewCoreState extends State<PhotoViewCore>
     _rotationBefore = controller!.rotation;
     _scaleBefore = scale;
     _normalizedPosition = details.focalPoint - controller!.position!;
-    _scaleAnimationController!.stop();
-    _positionAnimationController!.stop();
-    _rotationAnimationController!.stop();
+    _scaleAnimationController.stop();
+    _positionAnimationController.stop();
+    _rotationAnimationController.stop();
   }
 
   void onScaleUpdate(ScaleUpdateDetails details) {
@@ -204,7 +204,7 @@ class PhotoViewCoreState extends State<PhotoViewCore>
     _scaleAnimation = Tween<double>(
       begin: from,
       end: to,
-    ).animate(_scaleAnimationController!);
+    ).animate(_scaleAnimationController);
     _scaleAnimationController
       ..value = 0.0
       ..fling(velocity: 0.4);
@@ -212,7 +212,7 @@ class PhotoViewCoreState extends State<PhotoViewCore>
 
   void animatePosition(Offset? from, Offset to) {
     _positionAnimation = Tween<Offset>(begin: from, end: to)
-        .animate(_positionAnimationController!);
+        .animate(_positionAnimationController);
     _positionAnimationController
       ..value = 0.0
       ..fling(velocity: 0.4);
@@ -220,7 +220,7 @@ class PhotoViewCoreState extends State<PhotoViewCore>
 
   void animateRotation(double? from, double to) {
     _rotationAnimation = Tween<double>(begin: from, end: to)
-        .animate(_rotationAnimationController!);
+        .animate(_rotationAnimationController);
     _rotationAnimationController
       ..value = 0.0
       ..fling(velocity: 0.4);
@@ -245,7 +245,7 @@ class PhotoViewCoreState extends State<PhotoViewCore>
     super.initState();
     _scaleAnimationController = AnimationController(vsync: this)
       ..addListener(handleScaleAnimation);
-    _scaleAnimationController!.addStatusListener(onAnimationStatus);
+    _scaleAnimationController.addStatusListener(onAnimationStatus);
 
     _positionAnimationController = AnimationController(vsync: this)
       ..addListener(handlePositionAnimate);
@@ -266,10 +266,10 @@ class PhotoViewCoreState extends State<PhotoViewCore>
 
   @override
   void dispose() {
-    _scaleAnimationController!.removeStatusListener(onAnimationStatus);
-    _scaleAnimationController!.dispose();
-    _positionAnimationController!.dispose();
-    _rotationAnimationController!.dispose();
+    _scaleAnimationController.removeStatusListener(onAnimationStatus);
+    _scaleAnimationController.dispose();
+    _positionAnimationController.dispose();
+    _rotationAnimationController.dispose();
     super.dispose();
   }
 
@@ -368,7 +368,7 @@ class PhotoViewCoreState extends State<PhotoViewCore>
         ? widget.customChild
         : Image(
             image: widget.imageProvider!,
-            gaplessPlayback: widget.gaplessPlayback ?? false,
+            gaplessPlayback: widget.gaplessPlayback,
             filterQuality: widget.filterQuality,
             width: scaleBoundaries.childSize!.width * scale!,
             fit: BoxFit.contain,
